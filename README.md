@@ -40,11 +40,12 @@ _NullPointerException_
 * Java XML transformations (XSLT): https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html
 * XML Signature: there is enough information available, but first we need to know a bit more about assignment.
 
-### Poznamky z cvik:
+### Poznamky z cviceni:
 #### 1. cvicenie
 email: major@ditec.sk; poklady na cviko:
 * http://test.ditec.sk/fiit/temy.txt
 * http://test.ditec.sk/fiit/cvicenie1.zip
+
 ##### Minimalne poziadavky na 1 cast zadania:
 1. XSD, Minimalne poziadavky: atribut, 3 datove typy, opakovatelna sekcia (knihy, …, tlacidlo "+" v GUI). Cca 10 poloziek na vyplnenie.
 2. GUI, mozme zobrat aj existujuci formular a prerobit ho/zjednodusit. malo by to pekne vyzerat.
