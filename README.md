@@ -8,15 +8,18 @@ _NullPointerException_
 	- vystupom je xsd, xsl, pripadne sample xml zodpovedajuci xsd
 	- implementacia jednoduchej aplikacie pre tipovanie poloziek formulara, overenie voci scheme a jej zobrazenie pomocou xsl
 	- vystupom je funkcna aplikacia
+
 2. #####vytvorenie elektronickeho podpisu - 20%
 	- uvod do xml signature a XAdES + formy xadesu (minimalne EPES a T - s tymi sa bude pracovat)
 	- uvod do certifikatov x509
 	- rozsirenie aplikacie o integraciu podpisovaca DSigner XAdES
 	- vystupom funkcna aplikacia integrujuca podpisovac a podpisane xml (XAdES-EPES) ulozene v subore
+
 3. #####casova peciatka - 20%
 	- uvod do casovej peciatky
 	- implementacia aplikacie ziadajucej casovu peciatku a rozsirenie XAdES-EPES na XAdES-T
 	- vystupom je rozsireny podpis o casovu peciatku - XAdES-T ulozeny v subore
+
 4. #####overenie elektronickeho podpisu - 40%
 	- uvod do problematiky overovania
 	- uvod co crl a vztahu s certifikatmi
@@ -38,8 +41,7 @@ _NullPointerException_
 
 ### Poznamky z cvik:
 #### 1. cvicenie
-major@ditec.sk
-poklady na cvika:
+email: major@ditec.sk; poklady na cviko:
 * http://test.ditec.sk/fiit/temy.txt
 * http://test.ditec.sk/fiit/cvicenie1.zip
 ##### Minimalne poziadavky na 1 cast zadania:
