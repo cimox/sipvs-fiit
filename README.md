@@ -2,6 +2,7 @@
 SIPVS FIIT electronic signature agony
 #### Assigment
 _NullPointerException_
+
 1. #####zakladne pojmy - 20%
 	- rychly uvod do xml, xsd, xsl
 	- navrh konkretneho formulara (xsd, xsl) - mozeme specifikovat co presne ma obsahovat, alebo to nechame studentov.
