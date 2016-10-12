@@ -22,19 +22,5 @@ public class App {
                 }
             }
         });
-
-//        System.out.println("Validating XML file...");
-//        ValidatorXML validatorXML = new ValidatorXML();
-//        try {
-//            InputStream xml = new FileInputStream("../sipvs-fiit/data/sample.xml");
-//            InputStream xsd = new FileInputStream("../sipvs-fiit/data/schema.xsd");
-//
-//            boolean validationResult = validatorXML.validateAgainstXSD(xml, xsd);
-//            System.out.println("Validation result: " + validationResult);
-//
-//        } catch (FileNotFoundException e) {
-//            System.err.println("Error: " + e.getMessage());
-//            e.printStackTrace();
-//        }
     }
 }

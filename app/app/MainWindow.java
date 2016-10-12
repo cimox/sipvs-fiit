@@ -229,23 +229,6 @@ public class MainWindow extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Save button pressed");
-
-//				private JTextField textFieldMeno;
-//				private JTextField textFieldPriezvisko;
-//				private JTextField textFieldUlica;
-//				private JTextField textFieldMesto;
-//				private JTextField textFieldTitulKnihy;
-//				private JTextField textFieldISBN;
-//				private JTextField textFieldStat;
-//				private JTextField textFieldDatumOd;
-//				private JTextField textFieldDatumDo;
-//				private JTextField textFieldPSC;
-//				private JTextField textFieldCisloUlice;
-//				private JTextField textFieldMail;
-//				private JTextField textField;
-
-                // Person info
                 String firstName = textFieldMeno.getText();
                 String lastName = textFieldPriezvisko.getText();
                 String street = textFieldUlica.getText();
@@ -270,7 +253,6 @@ public class MainWindow extends JFrame {
 
                 BookDocument doc = new BookDocument(firstName, lastName, street, streetNumber, city, postalCode, state, email, notification, bookTitle, dateFrom, dateTo);
                 doc.generateXML();
-
             }
         });
 
@@ -281,7 +263,7 @@ public class MainWindow extends JFrame {
 
 //		Validate button
         JButton validateDocument = new JButton("Validate XML");
-        validateDocument.setBounds(200, 400, 100, 25);
+        validateDocument.setBounds(200, 400, 150, 25);
         contentPane.add(validateDocument);
         validateDocument.addActionListener(new ActionListener() {
             @Override
