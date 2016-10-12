@@ -18,7 +18,7 @@
 			<xs:element name="lastName" type="xs:string" />
 			<xs:element name="email" type="xs:string" />
 			<xs:element name="notification" type="xs:integer" default="7" /> <!-- in days -->
-			<xs:element name="cardID" type="xs:string" />
+			<!--<xs:element name="cardID" type="xs:string" />-->
 			<xs:element name="address" type="address" />
 		</xs:sequence>
 	</xs:complexType>

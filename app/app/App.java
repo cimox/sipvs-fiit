@@ -36,7 +36,5 @@ public class App {
 //            System.err.println("Error: " + e.getMessage());
 //            e.printStackTrace();
 //        }
-
-        System.out.println("Finished...");
     }
 }
