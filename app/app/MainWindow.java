@@ -10,9 +10,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 
@@ -20,15 +23,28 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
+//import org.jdatepicker.impl.JDatePanelImpl;
+//import org.jdatepicker.impl.JDatePickerImpl;
+//import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.fop.apps.FOPException;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.MimeConstants;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.UIManager;
 import java.awt.Color;
@@ -259,6 +275,23 @@ public class MainWindow extends JFrame {
 
 //		Save as PDF
         JButton savePDFButton = new JButton("Save as PDF");
+        savePDFButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		
+        		try {
+					convertToPDF();
+				} catch (FOPException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        });
         savePDFButton.setBounds(100, 400, 100, 25);
         contentPane.add(savePDFButton);
 
@@ -299,5 +332,38 @@ public class MainWindow extends JFrame {
 //		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 //		datePicker.setBounds(10, 450, 100, 100);
 //		contentPane.add(datePicker);
+    }
+    
+    public void convertToPDF()  throws IOException, FOPException, TransformerException {
+        // the XSL FO file
+        File xsltFile = new File("../sipvs-fiit/data/transform.xslt");
+        // the XML file which provides the input
+        StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/sample.xml"));
+        // create an instance of fop factory
+        FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+        // a user agent is needed for transformation
+        FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+        // Setup output
+        OutputStream out;
+        out = new java.io.FileOutputStream("../sipvs-fiit/data/sample.pdf");
+    
+        try {
+            // Construct fop with desired output format
+            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
+
+            // Setup XSLT
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
+
+            // Resulting SAX events (the generated FO) must be piped through to FOP
+            Result res = new SAXResult(fop.getDefaultHandler());
+
+            // Start XSLT transformation and FOP processing
+            // That's where the XML is first transformed to XSL-FO and then 
+            // PDF is created
+            transformer.transform(xmlSource, res);
+        } finally {
+            out.close();
+        }
     }
 }
