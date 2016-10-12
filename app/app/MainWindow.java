@@ -253,6 +253,7 @@ public class MainWindow extends JFrame {
 
                 BookDocument doc = new BookDocument(firstName, lastName, street, streetNumber, city, postalCode, state, email, notification, bookTitle, dateFrom, dateTo);
                 doc.generateXML();
+                doc.transformXML();
             }
         });
 

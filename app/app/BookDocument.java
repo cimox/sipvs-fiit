@@ -9,11 +9,10 @@ import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -158,5 +157,21 @@ public class BookDocument {
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
         }
+    }
+
+    public void transformXML() {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Source xslt = new StreamSource(new File("../sipvs-fiit/data/transform.xslt"));
+        Transformer transformer = null;
+        try {
+            transformer = factory.newTransformer(xslt);
+            Source text = new StreamSource(new File("../sipvs-fiit/data/file.xml"));
+            transformer.transform(text, new StreamResult(new File("output.html")));
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
     }
 }
