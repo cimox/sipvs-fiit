@@ -14,8 +14,8 @@ public class App {
         System.out.println("Validating XML file...");
         ValidatorXML validatorXML = new ValidatorXML();
         try {
-            InputStream xml = new FileInputStream("/Users/cimo/Desktop/sample.xml");
-            InputStream xsd = new FileInputStream("/Users/cimo/Desktop/schema.xsd");
+            InputStream xml = new FileInputStream("../sipvs-fiit/data/sample.xml");
+            InputStream xsd = new FileInputStream("../sipvs-fiit/data/schema.xsd");
 
             boolean validationResult = validatorXML.validateAgainstXSD(xml, xsd);
             System.out.println("Validation result: " + validationResult);
