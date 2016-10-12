@@ -10,8 +10,6 @@ import java.io.InputStream;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("I hate Java");
-
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

@@ -26,7 +26,7 @@ public class BookDocument {
     String street;
     Integer streetNumber;
     String city;
-    Integer postalCode;
+    String postalCode;
     String state;
     String email;
     Integer notification;
@@ -34,7 +34,7 @@ public class BookDocument {
     Date dateFrom;
     Date dateTo;
 
-    public BookDocument(String firstName, String lastName, String street, Integer streetNumber, String city, Integer postalCode, String state, String email, Integer notification, String bookTitle, Date dateFrom, Date dateTo) {
+    public BookDocument(String firstName, String lastName, String street, Integer streetNumber, String city, String postalCode, String state, String email, Integer notification, String bookTitle, Date dateFrom, Date dateTo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;
@@ -66,13 +66,14 @@ public class BookDocument {
 //        </staff>
 //    </company>
 
-    public void generateXML() {
+    public Document generateXML() {
+    	Document doc = null;
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             // root elements
-            Document doc = docBuilder.newDocument();
+            doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("rental");
             doc.appendChild(rootElement);
 
@@ -140,23 +141,10 @@ public class BookDocument {
             dateTo.appendChild(doc.createTextNode(dateFormat.format(this.dateTo)));
             book.appendChild(dateTo);
 
-
-            // write the content into xml file
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("../sipvs-fiit/data/file.xml"));
-
-            // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
-
-            transformer.transform(source, result);
-
-            System.out.println("File saved!");
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
         }
+        return doc;
     }
+    
 }
