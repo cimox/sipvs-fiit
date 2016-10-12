@@ -20,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.NumberFormatter;
 import javax.swing.JFormattedTextField;
+import javax.swing.UIManager;
+import java.awt.Color;
 
 public class MainWindow extends JFrame {
 
@@ -27,7 +29,7 @@ public class MainWindow extends JFrame {
 	private JTextField textFieldMeno;
 	private JTextField textFieldPriezvisko;
 	private JTextField textFieldUlica;
-	private JTextField textFieldObec;
+	private JTextField textFieldMesto;
 	private JTextField textFieldTitulKnihy;
 	private JTextField textFieldISBN;
 	private JTextField textFieldStat;
@@ -35,6 +37,8 @@ public class MainWindow extends JFrame {
 	private JTextField textFieldDatumDo;
 	private JTextField textFieldPSC;
 	private JTextField textFieldCisloUlice;
+	private JTextField textFieldMail;
+	private JTextField textField;
 
 	/**
 	 * Create the frame.
@@ -50,7 +54,7 @@ public class MainWindow extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Pou\u017E\u00EDvate\u013E", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(0, 0, 255, 169);
+		panel.setBounds(0, 0, 255, 179);
 		contentPane.add(panel);
 		panel.setToolTipText("");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
@@ -63,6 +67,8 @@ public class MainWindow extends JFrame {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -95,12 +101,12 @@ public class MainWindow extends JFrame {
 		panel.add(textFieldStat, "4, 6, fill, default");
 		textFieldStat.setColumns(10);
 		
-		JLabel lblObec = new JLabel("Obec:");
-		panel.add(lblObec, "2, 8, right, default");
+		JLabel lblMesto = new JLabel("Mesto:");
+		panel.add(lblMesto, "2, 8, right, default");
 		
-		textFieldObec = new JTextField();
-		panel.add(textFieldObec, "4, 8, fill, default");
-		textFieldObec.setColumns(10);
+		textFieldMesto = new JTextField();
+		panel.add(textFieldMesto, "4, 8, fill, default");
+		textFieldMesto.setColumns(10);
 		
 		JLabel lblPs = new JLabel("PS\u010C:");
 		panel.add(lblPs, "6, 8, right, default");
@@ -123,9 +129,16 @@ public class MainWindow extends JFrame {
 		panel.add(textFieldCisloUlice, "8, 10, fill, default");
 		textFieldCisloUlice.setColumns(10);
 		
+		JLabel lblEmail = new JLabel("E-mail");
+		panel.add(lblEmail, "2, 12, right, default");
+		
+		textFieldMail = new JTextField();
+		panel.add(textFieldMail, "4, 12, fill, default");
+		textFieldMail.setColumns(10);
+		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Kniha", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(252, 0, 204, 81);
+		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Kniha(y)", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.setBounds(231, 190, 204, 81);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -154,7 +167,7 @@ public class MainWindow extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "D\u00E1tum", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(174, 337, 282, 49);
+		panel_2.setBounds(164, 297, 282, 49);
 		contentPane.add(panel_2);
 		panel_2.setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -182,5 +195,14 @@ public class MainWindow extends JFrame {
 		textFieldDatumDo = new JTextField();
 		panel_2.add(textFieldDatumDo, "8, 2, fill, default");
 		textFieldDatumDo.setColumns(10);
+		
+		JLabel lblUpozornenie = new JLabel("Upozornenie:");
+		lblUpozornenie.setBounds(10, 370, 70, 14);
+		contentPane.add(lblUpozornenie);
+		
+		textField = new JTextField();
+		textField.setBounds(79, 367, 76, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
 	}
 }
