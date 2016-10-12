@@ -10,8 +10,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -20,15 +22,27 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
+//import org.jdatepicker.impl.JDatePanelImpl;
+//import org.jdatepicker.impl.JDatePickerImpl;
+//import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.NumberFormatter;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.UIManager;
 import java.awt.Color;
@@ -234,7 +248,7 @@ public class MainWindow extends JFrame {
                 String street = textFieldUlica.getText();
                 Integer streetNumber = Integer.parseInt(textFieldCisloUlice.getText());
                 String city = textFieldMesto.getText();
-                Integer postalCode = Integer.parseInt(textFieldPSC.getText());
+                String postalCode = textFieldPSC.getText();//Integer.parseInt(textFieldPSC.getText());
                 String state = textFieldStat.getText();
                 String email = textFieldMail.getText();
                 Integer notification = Integer.parseInt(textField.getText());
@@ -252,8 +266,68 @@ public class MainWindow extends JFrame {
 
 
                 BookDocument doc = new BookDocument(firstName, lastName, street, streetNumber, city, postalCode, state, email, notification, bookTitle, dateFrom, dateTo);
-                doc.generateXML();
-                doc.transformXML();
+                Document document = doc.generateXML();
+                File fileToSave;
+                
+                JFileChooser fileChooser = new JFileChooser();
+                int userSelection = fileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    fileToSave = fileChooser.getSelectedFile();
+                    String fileName = fileToSave.getAbsolutePath() + ".xml";
+                    fileToSave = new File("../sipvs-fiit/data/file.xml");
+                    //System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                    
+                    // write the content into xml file
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = null;
+					try {
+						transformer = transformerFactory.newTransformer();					
+						DOMSource source = new DOMSource(document);                    
+						StreamResult result = new StreamResult(fileToSave);
+						transformer.transform(source, result);
+					} 
+                    catch (TransformerConfigurationException e1) {
+						e1.printStackTrace();
+					}
+                    catch (TransformerException e1) {
+						e1.printStackTrace();
+					}
+					//Validation
+					ValidatorXML validatorXML = new ValidatorXML();
+					boolean validationResult = false;
+	                try {
+	                    InputStream xml = new FileInputStream("../sipvs-fiit/data/file.xml");
+	                    InputStream xsd = new FileInputStream("../sipvs-fiit/data/schema.xsd");
+	                    validationResult = validatorXML.validateAgainstXSD(xml, xsd);
+	                } catch (FileNotFoundException err) {
+	                    System.err.println("Error: " + err.getMessage());
+	                    err.printStackTrace();
+	                }
+	                
+					if(validationResult == true) {
+						JOptionPane.showMessageDialog(null, "File saved!", "Save XML file", JOptionPane.INFORMATION_MESSAGE);
+						fileToSave = new File(fileName);
+						
+						try {
+							transformer = transformerFactory.newTransformer();					
+							DOMSource source = new DOMSource(document);                    
+							StreamResult result = new StreamResult(fileToSave);
+							transformer.transform(source, result);
+						} 
+	                    catch (TransformerConfigurationException e1) {
+							e1.printStackTrace();
+						}
+	                    catch (TransformerException e1) {
+							e1.printStackTrace();
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid file!", "Save XML file", JOptionPane.INFORMATION_MESSAGE);
+					}
+                }
+                
+
             }
         });
 
@@ -261,30 +335,6 @@ public class MainWindow extends JFrame {
         JButton savePDFButton = new JButton("Save as PDF");
         savePDFButton.setBounds(100, 400, 100, 25);
         contentPane.add(savePDFButton);
-
-//		Validate button
-        JButton validateDocument = new JButton("Validate XML");
-        validateDocument.setBounds(200, 400, 150, 25);
-        contentPane.add(validateDocument);
-        validateDocument.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ValidatorXML validatorXML = new ValidatorXML();
-                System.out.println("Validating XML file...");
-                try {
-                    InputStream xml = new FileInputStream("../sipvs-fiit/data/file.xml");
-                    InputStream xsd = new FileInputStream("../sipvs-fiit/data/schema.xsd");
-
-                    boolean validationResult = validatorXML.validateAgainstXSD(xml, xsd);
-                    System.out.println("Validation result: " + validationResult);
-
-                } catch (FileNotFoundException err) {
-                    System.err.println("Error: " + err.getMessage());
-                    err.printStackTrace();
-                }
-                System.out.println("Done");
-            }
-        });
 
         // don' delete this
 //		UtilDateModel model = new UtilDateModel();
