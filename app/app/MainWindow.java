@@ -336,7 +336,7 @@ public class MainWindow extends JFrame {
     
     public void convertToPDF()  throws IOException, FOPException, TransformerException {
         // the XSL FO file
-        File xsltFile = new File("../sipvs-fiit/data/transform.xslt");
+        File xsltFile = new File("../sipvs-fiit/data/transform2.xslt");
         // the XML file which provides the input
         StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/sample.xml"));
         // create an instance of fop factory

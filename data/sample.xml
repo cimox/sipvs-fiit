@@ -13,6 +13,19 @@
         	<country>Slovakia</country>
         </address>
     </person>
+	<person>
+        <firstName>Robert</firstName>
+        <lastName>Birkus</lastName>
+        <email>rbirkus@gmail.com</email>
+        <notification>7</notification> <!-- 7 days before rental expiration -->
+        <!--<cardID>MC-123</cardID> &lt;!&ndash; ISIC, ... &ndash;&gt;-->
+        <address>
+        	<street>Ilkovicova 5</street>
+        	<postalCode>83101</postalCode>
+        	<city>Bratislava</city>
+        	<country>Slovakia</country>
+        </address>
+    </person>
     <book isbn="ISBN-1">
         <title>Harry Potter 1</title>
         <dateFrom>2016-10-01</dateFrom>
