@@ -13,8 +13,11 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -31,6 +34,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -53,64 +58,71 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import models.Book;
+import models.Formular;
+import models.Person;
+import models.RandomString;
+
 public class MainWindow extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textFieldMeno;
-	private JTextField textFieldPriezvisko;
-	private JTextField textFieldUlica;
-	private JTextField textFieldMesto;
+	private JTextField textFieldFirstName;
+	private JTextField textFieldLastName;
+	private JTextField textFieldStreet;
+	private JTextField textFieldCity;
 	private JTextField textFieldTitulKnihy;
 	private JTextField textFieldISBN;
-	private JTextField textFieldStat;
+	private JTextField textFieldState;
 	private JTextField textFieldDatumOd;
 	private JTextField textFieldDatumDo;
-	private JTextField textFieldPSC;
-	private JTextField textFieldCisloUlice;
-	private JTextField textFieldMail;
-	private JTextField textField;
+	private JTextField textFieldPostalCode;
+	private JTextField textFieldStreetNumber;
+	private JTextField textFieldEmail;
+	private JTextField textFieldNotification;
 
 	private JButton saveButton;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField textField_3; // dateFrom
+	private JTextField textField_4; // dateTo
 	private JTextField textField_5;
 	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
+	private JTextField textField_7; // dateFrom
+	private JTextField textField_8; // dateTo
 	private JTextField textField_9;
 	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
+	private JTextField textField_11; // dateFrom
+	private JTextField textField_12; // dateTo
 	private JTextField textField_13;
 	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
+	private JTextField textField_15; // dateFrom
+	private JTextField textField_16; // dateTo
 	private JTextField textField_17;
 	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
+	private JTextField textField_19; // dateFrom
+	private JTextField textField_20; // dateTo
 	private JTextField textField_21;
 	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
+	private JTextField textField_23; // dateFrom
+	private JTextField textField_24; // dateTo
 	private JTextField textField_25;
 	private JTextField textField_26;
-	private JTextField textField_27;
+	private JTextField textField_27; // dateFrom
 	private JTextField textField_28;
 	private JTextField textField_29;
 	private JTextField textField_30;
-	private JTextField textField_31;
+	private JTextField textField_31; // dateFrom
 	private JTextField textField_32;
 	private JTextField textField_33;
 	private JTextField textField_34;
-	private JTextField textField_35;
-	private JTextField textField_36;
+	private JTextField textField_35; // dateFrom
+	private JTextField textField_36; // dateTo
 	private JTextField textField_37;
 	private JTextField textField_38;
-	private JTextField textField_39;
-	private JTextField textField_40;
+	private JTextField textField_39; // dateFrom
+	private JTextField textField_40; // dateTo
+
+	private JLayeredPane layeredPane;
 
 	/**
 	 * Create the frame.
@@ -128,10 +140,11 @@ public class MainWindow extends JFrame {
 		lblUpozornenie.setBounds(524, 195, 150, 20);
 		contentPane.add(lblUpozornenie);
 
-		textField = new JTextField();
-		textField.setBounds(674, 195, 100, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldNotification = new JTextField();
+		textFieldNotification.setBounds(674, 195, 100, 20);
+		textFieldNotification.setText("7");
+		contentPane.add(textFieldNotification);
+		textFieldNotification.setColumns(10);
 
 		// Save button
 		JButton saveButton = new JButton("Save XML");
@@ -140,32 +153,12 @@ public class MainWindow extends JFrame {
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String firstName = textFieldMeno.getText();
-				String lastName = textFieldPriezvisko.getText();
-				String street = textFieldUlica.getText();
-				Integer streetNumber = Integer.parseInt(textFieldCisloUlice.getText());
-				String city = textFieldMesto.getText();
-				String postalCode = textFieldPSC.getText();// Integer.parseInt(textFieldPSC.getText());
-				String state = textFieldStat.getText();
-				String email = textFieldMail.getText();
-				Integer notification = Integer.parseInt(textField.getText());
+				// TODO: refactor this shit
 
-				// Book info
-				DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-				String bookTitle = textFieldTitulKnihy.getText();
-				Date dateFrom = null, dateTo = null;
-				try {
-					dateFrom = format.parse(textFieldDatumOd.getText());
-					dateTo = format.parse(textFieldDatumDo.getText());
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-				}
+				Formular formularData = getFormularData();
+				Document document = formularData.generateDocument();
 
-				BookDocument doc = new BookDocument(firstName, lastName, street, streetNumber, city, postalCode, state,
-						email, notification, bookTitle, dateFrom, dateTo);
-				Document document = doc.generateXML();
 				File fileToSave;
-
 				JFileChooser fileChooser = new JFileChooser();
 				int userSelection = fileChooser.showSaveDialog(null);
 
@@ -229,7 +222,6 @@ public class MainWindow extends JFrame {
 		JButton savePDFButton = new JButton("Save as PDF");
 		savePDFButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				try {
 					convertToPDF();
 				} catch (FOPException e) {
@@ -244,7 +236,7 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		savePDFButton.setBounds(674, 226, 100, 25);
+		savePDFButton.setBounds(674, 226, 150, 25);
 		contentPane.add(savePDFButton);
 
 		JPanel panel = new JPanel();
@@ -262,61 +254,72 @@ public class MainWindow extends JFrame {
 						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
 						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
 
+		// TODO: add tooltips
 		JLabel lblMeno = new JLabel("Meno:");
 		panel.add(lblMeno, "2, 2, right, default");
 
-		textFieldMeno = new JTextField();
-		panel.add(textFieldMeno, "4, 2, fill, default");
-		textFieldMeno.setColumns(10);
+		textFieldFirstName = new JTextField();
+		panel.add(textFieldFirstName, "4, 2, fill, default");
+		textFieldFirstName.setText("Matus");
+		textFieldFirstName.setColumns(10);
 
 		JLabel lblPriezvisko = new JLabel("Priezvisko:");
 		panel.add(lblPriezvisko, "2, 4, right, default");
 
-		textFieldPriezvisko = new JTextField();
-		panel.add(textFieldPriezvisko, "4, 4, fill, default");
-		textFieldPriezvisko.setColumns(10);
+		textFieldLastName = new JTextField();
+		panel.add(textFieldLastName, "4, 4, fill, default");
+		textFieldLastName.setText("Cimerman");
+		textFieldLastName.setColumns(10);
 
 		JLabel lbltt = new JLabel("\u0160t\u00E1t:");
 		panel.add(lbltt, "2, 6, right, default");
 
-		textFieldStat = new JTextField();
-		panel.add(textFieldStat, "4, 6, fill, default");
-		textFieldStat.setColumns(10);
+		textFieldState = new JTextField();
+		textFieldState.setText("Slovakia");
+		panel.add(textFieldState, "4, 6, fill, default");
+
+		textFieldState.setColumns(10);
 
 		JLabel lblMesto = new JLabel("Mesto:");
 		panel.add(lblMesto, "2, 8, right, default");
 
-		textFieldMesto = new JTextField();
-		panel.add(textFieldMesto, "4, 8, fill, default");
-		textFieldMesto.setColumns(10);
+		textFieldCity = new JTextField();
+		textFieldCity.setToolTipText("Your residental city");
+		textFieldCity.setText("Bratislava");
+		panel.add(textFieldCity, "4, 8, fill, default");
+		textFieldCity.setColumns(10);
 
 		JLabel lblPs = new JLabel("PS\u010C:");
 		panel.add(lblPs, "6, 8, right, default");
 
-		textFieldPSC = new JTextField();
-		panel.add(textFieldPSC, "8, 8, fill, default");
-		textFieldPSC.setColumns(10);
+		textFieldPostalCode = new JTextField();
+		textFieldPostalCode.setText("85101");
+		panel.add(textFieldPostalCode, "8, 8, fill, default");
+		textFieldPostalCode.setColumns(10);
 
 		JLabel lblUlica = new JLabel("Ulica:");
 		panel.add(lblUlica, "2, 10, right, default");
 
-		textFieldUlica = new JTextField();
-		panel.add(textFieldUlica, "4, 10, fill, default");
-		textFieldUlica.setColumns(10);
+		textFieldStreet = new JTextField();
+		textFieldStreet.setText("Ilkovicova");
+		panel.add(textFieldStreet, "4, 10, fill, default");
+		textFieldStreet.setColumns(10);
 
 		JLabel label = new JLabel("\u010D.");
 		panel.add(label, "6, 10, right, default");
 
-		textFieldCisloUlice = new JTextField();
-		panel.add(textFieldCisloUlice, "8, 10, fill, default");
-		textFieldCisloUlice.setColumns(10);
+		textFieldStreetNumber = new JTextField();
+		textFieldStreetNumber.setText("2");
+		panel.add(textFieldStreetNumber, "8, 10, fill, default");
+		textFieldStreetNumber.setColumns(10);
 
 		JLabel lblEmail = new JLabel("E-mail");
 		panel.add(lblEmail, "2, 12, right, default");
 
-		textFieldMail = new JTextField();
-		panel.add(textFieldMail, "4, 12, fill, default");
-		textFieldMail.setColumns(10);
+		textFieldEmail = new JTextField();
+		textFieldEmail.setText("matus.cimerman@gmail.com");
+		panel.add(textFieldEmail, "4, 12, fill, default");
+		textFieldEmail.setColumns(10);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(469, 66, 173, 75);
@@ -368,7 +371,7 @@ public class MainWindow extends JFrame {
 		panel_2.add(textFieldDatumDo, "8, 2, fill, default");
 		textFieldDatumDo.setColumns(10);
 
-		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(10, 261, 898, 490);
 		contentPane.add(layeredPane);
 
@@ -885,6 +888,7 @@ public class MainWindow extends JFrame {
 		textField_38 = new JTextField();
 		textField_38.setColumns(10);
 		textField_38.setBounds(89, 40, 80, 20);
+		textField_38.disable();
 		panel_31.add(textField_38);
 
 		JPanel panel_32 = new JPanel();
@@ -917,21 +921,11 @@ public class MainWindow extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				Component[] com = layeredPane.getComponents();
 				for (int i = 1; i <= com.length; i++) {
-					if (i <= (Integer) spinner.getValue())
+					if (i <= (Integer) spinner.getValue()) {
 						((JPanel) com[i - 1]).setVisible(true);
-					else
+					} else
 						((JPanel) com[i - 1]).setVisible(false);
 				}
-				/*
-				 * for (int j = 0; j < com.length; j++) { Component[] components
-				 * = ((JPanel) com[j]).getComponents(); Component[] titulky =
-				 * ((JPanel) components[0]).getComponents(); Component[] datumy
-				 * = ((JPanel) components[1]).getComponents(); String titulok =
-				 * ((JTextField) titulky[1]).getText(); String isbn =
-				 * ((JTextField) titulky[3]).getText(); String jeden_druhy =
-				 * ((JTextField) datumy[1]).getText(); String druhy_datum =
-				 * ((JTextField) datumy[3]).getText(); j++; }
-				 */
 			}
 		});
 		spinner.setBounds(412, 227, 36, 20);
@@ -940,13 +934,114 @@ public class MainWindow extends JFrame {
 		JLabel lblPoetKnh = new JLabel("Po\u010Det kn\u00EDh");
 		lblPoetKnh.setBounds(412, 198, 74, 14);
 		contentPane.add(lblPoetKnh);
+
+		generateRandomDates();
 	}
 
-	public void convertToPDF() throws IOException, FOPException, TransformerException {
+	private void generateRandomDates() {
+		String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
+
+		Component[] com = layeredPane.getComponents();
+		for (int j = 0; j < com.length; j++) {
+			Component[] components = ((JPanel) com[j]).getComponents();
+			Component[] bookDetails = ((JPanel) components[0]).getComponents();
+			((JTextField) bookDetails[1]).getDocument().addDocumentListener(new DocumentListener() {
+
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					generateRandomISBN();
+				}
+
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				private void generateRandomISBN() {
+					((JTextField) bookDetails[3]).setText(new RandomString(12).nextString().toUpperCase());
+					;
+				}
+			});
+
+			((JTextField) bookDetails[3]).disable();
+
+			Component[] bookDates = ((JPanel) components[1]).getComponents();
+			int idx = new Random().nextInt(months.length);
+			String month = (months[idx]);
+			int rnd = ThreadLocalRandom.current().nextInt(1, 30 + 1);
+			System.out.println(month + " " + rnd + ", 2016");
+			((JTextField) bookDates[1]).setText(month + " " + rnd + ", 2016");
+			idx = new Random().nextInt(months.length);
+			month = (months[idx]);
+			((JTextField) bookDates[3]).setText(month + " " + rnd + ", 2016");
+		}
+	}
+
+	private Formular getFormularData() {
+		Formular formularData = null;
+		ArrayList<Book> books = new ArrayList<>();
+		Person person = null;
+
+		// Get books data
+		Component[] com = layeredPane.getComponents();
+		for (int j = 0; j < com.length; j++) {
+			Component[] components = ((JPanel) com[j]).getComponents();
+
+			Component[] bookDetails = ((JPanel) components[0]).getComponents();
+			Component[] bookDates = ((JPanel) components[1]).getComponents();
+			String bookTitle = ((JTextField) bookDetails[1]).getText();
+			String bookISBN = ((JTextField) bookDetails[3]).getText();
+
+			if (bookTitle.length() > 0) {
+				String dateFromStr = ((JTextField) bookDates[1]).getText();
+				String dateToStr = ((JTextField) bookDates[3]).getText();
+
+				System.out.println("title: " + bookTitle);
+				System.out.println("date from: " + dateFromStr);
+				System.out.println("date to: " + dateToStr);
+
+				DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+				Date dateFrom = null, dateTo = null;
+				try {
+					dateFrom = format.parse(dateFromStr);
+					dateTo = format.parse(dateToStr);
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+
+				books.add(new Book(bookTitle, bookISBN, dateFrom, dateTo));
+			}
+		}
+
+		// Get person data
+		String firstName = textFieldFirstName.getText();
+		String lastName = textFieldLastName.getText();
+		String street = textFieldStreet.getText();
+		Integer streetNumber = Integer.parseInt(textFieldStreetNumber.getText());
+		String city = textFieldCity.getText();
+		String postalCode = textFieldPostalCode.getText();// Integer.parseInt(textFieldPSC.getText());
+		String state = textFieldState.getText();
+		String email = textFieldEmail.getText();
+		Integer notification = Integer.parseInt(textFieldNotification.getText());
+		person = new Person(firstName, lastName, street, streetNumber, city, postalCode, state, email, notification);
+		formularData = new Formular(books, person);
+
+		return formularData;
+	}
+
+	private void convertToPDF() throws IOException, FOPException, TransformerException {
 		// the XSL FO file
 		File xsltFile = new File("../sipvs-fiit/data/transform2.xslt");
 		// The XML file which provides the input
-		StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/sample.xml"));
+		StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/file.xml"));
 		// create an instance of fop factory
 		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 		// a user agent is needed for transformation
