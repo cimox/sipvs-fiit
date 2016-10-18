@@ -145,7 +145,6 @@ public class BookDocument {
         }
         return doc;
     }
-    }
 
     public void transformXML() {
         TransformerFactory factory = TransformerFactory.newInstance();
