@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="app"/>
-	<classpathentry kind="lib" path="jars/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="jars/jgoodies-common-1.8.1.jar"/>
-	<classpathentry kind="output" path="compile/production/sipvs-fiit"/>
+	<classpathentry kind="lib" path="jars/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

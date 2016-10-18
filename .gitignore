@@ -26,3 +26,4 @@ hs_err_pid*
 
 .idea/sipvs-fiit.iml
 .idea/workspace.xml
+/bin/
