@@ -1,13 +1,7 @@
 package app;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,21 +11,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
-import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.NumberFormatter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -42,33 +41,17 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.fop.apps.FOPException;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.MimeConstants;
 import org.w3c.dom.Document;
 
-//import org.apache.fop.apps.FOPException;
-//import org.apache.fop.apps.FOUserAgent;
-//import org.apache.fop.apps.Fop;
-//import org.apache.fop.apps.FopFactory;
-//import org.apache.fop.apps.MimeConstants;
-
-import javax.swing.JFormattedTextField;
-import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.Component;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import javax.swing.JLayeredPane;
-import javax.swing.JComboBox;
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.SpinnerNumberModel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class MainWindow extends JFrame {
 
@@ -247,13 +230,18 @@ public class MainWindow extends JFrame {
 		savePDFButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				/*
-				 * try { convertToPDF(); } catch (FOPException e) { // TODO
-				 * Auto-generated catch block e.printStackTrace(); } catch
-				 * (IOException e) { // TODO Auto-generated catch block
-				 * e.printStackTrace(); } catch (TransformerException e) { //
-				 * TODO Auto-generated catch block e.printStackTrace(); }
-				 */
+				try {
+					convertToPDF();
+				} catch (FOPException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		savePDFButton.setBounds(674, 226, 100, 25);
@@ -952,5 +940,39 @@ public class MainWindow extends JFrame {
 		JLabel lblPoetKnh = new JLabel("Po\u010Det kn\u00EDh");
 		lblPoetKnh.setBounds(412, 198, 74, 14);
 		contentPane.add(lblPoetKnh);
+	}
+
+	public void convertToPDF() throws IOException, FOPException, TransformerException {
+		// the XSL FO file
+		File xsltFile = new File("../sipvs-fiit/data/transform2.xslt");
+		// The XML file which provides the input
+		StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/sample.xml"));
+		// create an instance of fop factory
+		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+		// a user agent is needed for transformation
+		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
+		// Setup output
+		OutputStream out;
+		out = new java.io.FileOutputStream("../sipvs-fiit/data/sample.pdf");
+
+		try {
+			// Construct fop with desired output format
+			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
+
+			// Setup XSLT
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
+
+			// Resulting SAX events (the generated FO) must be piped through to
+			// FOP
+			Result res = new SAXResult(fop.getDefaultHandler());
+
+			// Start XSLT transformation and FOP processing
+			// That's where the XML is first transformed to XSL-FO and then
+			// PDF is created
+			transformer.transform(xmlSource, res);
+		} finally {
+			out.close();
+		}
 	}
 }
