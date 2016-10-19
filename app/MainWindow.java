@@ -36,6 +36,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -70,11 +71,7 @@ public class MainWindow extends JFrame {
 	private JTextField textFieldLastName;
 	private JTextField textFieldStreet;
 	private JTextField textFieldCity;
-	private JTextField textFieldTitulKnihy;
-	private JTextField textFieldISBN;
 	private JTextField textFieldState;
-	private JTextField textFieldDatumOd;
-	private JTextField textFieldDatumDo;
 	private JTextField textFieldPostalCode;
 	private JTextField textFieldStreetNumber;
 	private JTextField textFieldEmail;
@@ -123,11 +120,14 @@ public class MainWindow extends JFrame {
 	private JTextField textField_40; // dateTo
 
 	private JLayeredPane layeredPane;
+	
+	String fileNameXML; // global var for XML fileName		
 
 	/**
 	 * Create the frame.
 	 */
 	public MainWindow() {
+		
 		setTitle("Po\u017Ei\u010Dov\u0148a kn\u00EDh");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 800);
@@ -164,7 +164,7 @@ public class MainWindow extends JFrame {
 
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					fileToSave = fileChooser.getSelectedFile();
-					String fileName = fileToSave.getAbsolutePath() + ".xml";
+					fileNameXML = fileToSave.getAbsolutePath() + ".xml";
 					fileToSave = new File("../sipvs-fiit/data/file.xml");
 					// System.out.println("Save as file: " +
 					// fileToSave.getAbsolutePath());
@@ -197,7 +197,7 @@ public class MainWindow extends JFrame {
 					if (validationResult == true) {
 						JOptionPane.showMessageDialog(null, "File saved!", "Save XML file",
 								JOptionPane.INFORMATION_MESSAGE);
-						fileToSave = new File(fileName);
+						fileToSave = new File(fileNameXML);
 
 						try {
 							transformer = transformerFactory.newTransformer();
@@ -223,7 +223,30 @@ public class MainWindow extends JFrame {
 		savePDFButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					convertToPDF();
+					
+					// Validation
+					ValidatorXML validatorXML = new ValidatorXML();
+					boolean validationResult = false;
+					try {
+						InputStream xml = new FileInputStream(fileNameXML);
+						InputStream xsd = new FileInputStream("../sipvs-fiit/data/schema.xsd");
+						validationResult = validatorXML.validateAgainstXSD(xml, xsd);
+					} catch (FileNotFoundException err) {
+						System.err.println("Error: " + err.getMessage());
+						err.printStackTrace();
+					}
+
+					if (validationResult == true) {
+						convertToPDF();
+						
+						JOptionPane.showMessageDialog(null, "File saved!", "Save PDF file",
+								JOptionPane.INFORMATION_MESSAGE);
+					}else
+					{
+						JOptionPane.showMessageDialog(null, "Invalid file!", "Save XML file",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+					
 				} catch (FOPException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -320,56 +343,6 @@ public class MainWindow extends JFrame {
 		textFieldEmail.setText("matus.cimerman@gmail.com");
 		panel.add(textFieldEmail, "4, 12, fill, default");
 		textFieldEmail.setColumns(10);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(469, 66, 173, 75);
-		contentPane.add(panel_1);
-		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Kniha(y)", TitledBorder.LEADING,
-				TitledBorder.TOP, null, new Color(0, 0, 0)));
-		FormLayout fl_panel_1 = new FormLayout(
-				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
-						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
-				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
-						FormSpecs.DEFAULT_ROWSPEC, });
-		panel_1.setLayout(fl_panel_1);
-
-		JLabel lblTitulokKnihy = new JLabel("Titulok knihy:");
-		panel_1.add(lblTitulokKnihy, "2, 2, right, default");
-
-		textFieldTitulKnihy = new JTextField();
-		panel_1.add(textFieldTitulKnihy, "4, 2, fill, default");
-		textFieldTitulKnihy.setColumns(10);
-
-		JLabel lblIsbn = new JLabel("ISBN:");
-		panel_1.add(lblIsbn, "2, 4, right, default");
-
-		textFieldISBN = new JTextField();
-		panel_1.add(textFieldISBN, "4, 4, fill, default");
-		textFieldISBN.setColumns(10);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(652, 66, 234, 49);
-		contentPane.add(panel_2);
-		panel_2.setBorder(new TitledBorder(null, "D\u00E1tum", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setLayout(new FormLayout(
-				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
-						FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
-						FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
-				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
-
-		JLabel lblOd = new JLabel("Od");
-		panel_2.add(lblOd, "2, 2");
-
-		textFieldDatumOd = new JTextField();
-		panel_2.add(textFieldDatumOd, "4, 2");
-		textFieldDatumOd.setColumns(10);
-
-		JLabel lblDo = new JLabel("do");
-		panel_2.add(lblDo, "6, 2, right, default");
-
-		textFieldDatumDo = new JTextField();
-		panel_2.add(textFieldDatumDo, "8, 2, fill, default");
-		textFieldDatumDo.setColumns(10);
 
 		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(10, 261, 898, 490);
@@ -1038,17 +1011,29 @@ public class MainWindow extends JFrame {
 	}
 
 	private void convertToPDF() throws IOException, FOPException, TransformerException {
+		
+		File fileToSave;
+		String fileNamePDF = new String();
+		JFileChooser fileChooser = new JFileChooser();
+		int userSelection = fileChooser.showSaveDialog(null);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			fileToSave = fileChooser.getSelectedFile();
+			fileNamePDF = fileToSave.getAbsolutePath() + ".pdf";
+			fileToSave = new File("../sipvs-fiit/data/file.pdf");
+		}
+		
 		// the XSL FO file
 		File xsltFile = new File("../sipvs-fiit/data/transform2.xslt");
 		// The XML file which provides the input
-		StreamSource xmlSource = new StreamSource(new File("../sipvs-fiit/data/file.xml"));
+		StreamSource xmlSource = new StreamSource(new File(fileNameXML));
 		// create an instance of fop factory
 		FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 		// a user agent is needed for transformation
 		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 		// Setup output
 		OutputStream out;
-		out = new java.io.FileOutputStream("../sipvs-fiit/data/sample.pdf");
+		out = new java.io.FileOutputStream(fileNamePDF);
 
 		try {
 			// Construct fop with desired output format
