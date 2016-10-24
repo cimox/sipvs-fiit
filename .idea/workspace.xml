@@ -3,6 +3,51 @@
   <component name="ChangeListManager">
     <list default="true" id="e2fcfd46-fa1d-4f68-980b-e0e9becbd82d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_5_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_5_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_5_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sparkjava_spark_template_thymeleaf_2_3.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ognl_ognl_3_0_6.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_javassist_javassist_3_16_1_GA.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_21.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_simple_1_7_21.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_thymeleaf_thymeleaf_2_1_3_RELEASE.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_unbescape_unbescape_1_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/src/main/java/models/Address.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/src/main/java/models/Form.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/index.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/GUI-draft.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/app/App.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/app/DateLabelFormatter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/app/MainWindow.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/app/ValidatorXML.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/._sample.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/file.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/file.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/sample.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/sample.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/test.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/test.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/test.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/test.xsl" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/data/transform2.xslt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/draft_gui.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_old/models/Formular.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/data/schema.xsd" afterPath="$PROJECT_DIR$/api/src/main/resources/public/data/schema.xsd" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/data/transform.xslt" afterPath="$PROJECT_DIR$/api/src/main/resources/public/data/transform.xslt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/models/Book.java" afterPath="$PROJECT_DIR$/api/src/main/java/models/Book.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/models/Person.java" afterPath="$PROJECT_DIR$/api/src/main/java/models/Person.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/_old/models/RandomString.java" afterPath="$PROJECT_DIR$/api/src/main/java/models/RandomString.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/target/classes/Api.class" afterPath="$PROJECT_DIR$/api/target/classes/Api.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/api.iml" afterPath="$PROJECT_DIR$/api/api.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/pom.xml" afterPath="$PROJECT_DIR$/api/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/src/main/java/Api.java" afterPath="$PROJECT_DIR$/api/src/main/java/Api.java" />
+>>>>>>> 270c4a80d23628ec578724d8875ff9be9e65bbd2
     </list>
     <ignored path="books-elsign.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -953,6 +998,7 @@
       <workItem from="1477075939264" duration="559000" />
       <workItem from="1477077118456" duration="22509000" />
       <workItem from="1477245947391" duration="16634000" />
+<<<<<<< HEAD
       <workItem from="1477266690729" duration="5205000" />
     </task>
     <task id="LOCAL-00001" summary="All shit in once">
@@ -967,6 +1013,14 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="44907000" />
+=======
+      <workItem from="1477266690729" duration="5006000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="44708000" />
+>>>>>>> 270c4a80d23628ec578724d8875ff9be9e65bbd2
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -1010,10 +1064,13 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+<<<<<<< HEAD
   <component name="VcsManagerConfiguration">
     <MESSAGE value="All shit in once" />
     <option name="LAST_COMMIT_MESSAGE" value="All shit in once" />
   </component>
+=======
+>>>>>>> 270c4a80d23628ec578724d8875ff9be9e65bbd2
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="24" />
