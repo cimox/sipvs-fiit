@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book rental - el.sign</title>
+
+
+    <!--<link rel="stylesheet" href="css/materialize.min.css" />-->
+    <!--<script src="js/materialize.min.js"></script>-->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="css/skeleton.css" type="text/css"/>
+    <link rel="stylesheet" href="css/pikaday.css" type="text/css"/>
+    <link rel="stylesheet" href="css/pikaday-skeleton.css" type="text/css"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="four columns">&nbsp;</div>
+        <div class="four columns">
+            <h1>Book rental</h1>
+        </div>
+        <div class="four columns">&nbsp;</div>
+    </div>
+    <hr/>
+
+    <!-- main form -->
+    <form>
+        <div class="container">
+            <div class="row">
+                <h2>Personal information</h2>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="firstName">First name</label>
+                    <input class="u-full-width" placeholder="Matus" id="firstName" value="Matus"/>
+                </div>
+                <div class="six columns">
+                    <label for="lastName">Last name</label>
+                    <input class="u-full-width" placeholder="Cimerman" id="lastName" value="Cimerman"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="email">Your email</label>
+                    <input class="u-full-width" type="email" placeholder="matus.cimerman@gmail.com" id="email"
+                           value="matus.cimerman@gmail.com"/>
+                </div>
+                <div class="six columns">
+                    <label for="notification">Expiration notification in days</label>
+                    <input class="u-full-width" placeholder="7" id="notification" value="7"/>
+                </div>
+            </div>
+        </div>
+        <!-- address -->
+        <div class="container">
+            <div class="row">
+                <h5>Address:</h5>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="street">Street</label>
+                    <input class="u-full-width" placeholder="Ilkovicova 2" id="street" value="Ilkovicova"/>
+                </div>
+                <div class="six columns">
+                    <label for="streetNumber">Street number</label>
+                    <input class="u-full-width" placeholder="2" id="streetNumber" value="2"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <label for="city">City</label>
+                    <input class="u-full-width" placeholder="Bratislava" id="city" value="Bratislava"/>
+                </div>
+                <div class="six columns">
+                    <label for="postalCode">Postal code</label>
+                    <input class="u-full-width" placeholder="83101" id="postalCode" value="83101"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <label for="country">Country</label>
+                    <input class="u-full-width" placeholder="Slovakia" id="country" value="Slovakia"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- books repeatable section -->
+        <div class="container">
+            <div class="row">
+                <div class="four columns">
+                    <h2>Select books</h2>
+                </div>
+                <div class="four columns" id="add-book-wrapper">
+                    <a class="button add-book" href="javascript:void(0);">Add book</a>
+                </div>
+            </div>
+        </div>
+        <div class="container book-details">
+            <div class="row book-title">
+                <div class="nine columns">
+                    <label for="bookTitle">Book title</label>
+                    <input class="u-full-width" placeholder="Harry Potter 1" id="bookTitle" value="Harry Potter 1"/>
+                </div>
+                <div class="three columns" id="remove-book-wrapper">
+                    <a class="button remove-book" href="javascript:void(0);">Remove book</a>
+                </div>
+            </div>
+            <div class="row book-dates">
+                <div class="six columns">
+                    <label for="dateFrom">Date from</label>
+                    <input class="u-full-width datepicker" placeholder="2016-10-01" id="dateFrom" value="2016-10-01"/>
+                </div>
+                <div class="six columns">
+                    <label for="dateTo">Date to</label>
+                    <input class="u-full-width datepicker" placeholder="2016-10-31" id="dateTo" value="2016-10-31"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="container main-buttons">
+            <a class="button button-primary create-xml">Create XML</a>
+            <a class="button save-xml" href="data/form.xml" download="data/form.xml">
+                Save XML
+            </a>
+            <a class="button validate-xml">Validate XML</a>
+            <a class="button save-html" href="data/form.html" download="data/form.html">
+                Save HTML
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- datepickers -->
+<script src="js/moment.js"></script>
+<script src="js/pikaday.js"></script>
+<script>
+    var datePickers = document.getElementsByClassName('datepicker');
+    Array.prototype.forEach.call(datePickers, function (datepicker) {
+        new Pikaday({
+            field: datepicker,
+            format: 'YYYY-MM-DD'
+        });
+    });
+
+    // add book button
+    $('a.add-book').on('click', function () {
+        $('div.book-details').last().clone().appendTo($('form'));
+    });
+    // remove book button
+    $('form').on('click', 'a.button.remove-book', function () {
+        if ($('div.container.book-details').length > 1) {
+            $(this).parent().parent().parent().remove();
+        }
+    });
+
+    readFormData = function () {
+        formData = {};
+        // read personal infomarion
+        formData.firstName = $('input#firstName').val();
+        formData.lastName = $('input#lastName').val();
+        formData.email = $('input#email').val();
+        formData.notification = $('input#notification').val();
+//         read address
+        formData.address = {};
+        formData.address.street = $('input#street').val();
+        formData.address.streetNumber = $('input#streetNumber').val();
+        formData.address.city = $('input#city').val();
+        formData.address.postalCode = $('input#postalCode').val();
+        formData.address.country = $('input#country').val();
+
+        readBookDetails = function () {
+            books = [];
+            $('.book-details').each(function () {
+                book = {};
+                book.bookTitle = $('#bookTitle', this).val();
+                book.dateFrom = $('#dateFrom', this).val();
+                book.dateTo = $('#dateTo', this).val();
+                books.push(book);
+            });
+            return books;
+        };
+        formData.books = readBookDetails();
+
+        return formData;
+    };
+    createXML = function () {
+        console.log('creating xml');
+        var formData = readFormData();
+
+        $.ajax({
+            type: "POST",
+            url: "/create",
+            dataType: "json",
+            data: JSON.stringify(formData),
+            success: function () {
+                console.log('XML file created');
+            }
+        });
+    };
+
+    // create XML
+    $('form').on('click', 'a.button.create-xml', function () {
+        var result = createXML();
+
+        $(this).removeClass('button-primary');
+        enableButtons = function () {
+            $('form a.button.save-xml').addClass('button-primary');
+            $('form a.button.save-html').addClass('button-primary');
+            $('form a.button.validate-xml').addClass('button-primary');
+        };
+        setTimeout(enableButtons, 1000);
+    });
+
+    // save XML
+    $('form').on('click', 'a.button.save-xml', function (e) {
+        createXML();
+        console.log('saving xml...' + $(this).attr('href'));
+    });
+
+    // validate XML
+    $('form').on('click', 'a.button.validate-xml', function (e) {
+//        createXML();
+        var result = false;
+        $.get('/validate', function (validationResult) {
+            alert(validationResult);
+        });
+    });
+
+</script>
+</body>
+</html>
