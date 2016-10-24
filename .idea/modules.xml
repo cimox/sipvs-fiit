@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sipvs-fiit.iml" filepath="$PROJECT_DIR$/.idea/sipvs-fiit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/books-elsign.iml" filepath="$PROJECT_DIR$/books-elsign.iml" />
     </modules>
   </component>
 </project>
