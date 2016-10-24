@@ -25,6 +25,13 @@
 	<xs:complexType name="address">
 		<xs:sequence>
 			<xs:element name="street" type="xs:string" />
+			<xs:element name="streetNumber">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:totalDigits value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 			<xs:element name="postalCode">
 				<xs:simpleType>
 					<xs:restriction base="xs:integer">

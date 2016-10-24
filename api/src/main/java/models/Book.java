@@ -1,29 +1,28 @@
 package models;
 
-import java.util.Date;
+import lombok.Data;
 
+
+@Data
 public class Book {
 	private String bookTitle;
 	private String bookISBN;
-	private Date dateFrom;
-	private Date dateTo;
+	private String dateFrom;
+	private String dateTo;
 
-	public Book(String bookTitle, String bookISBN, Date dateFrom, Date dateTo) {
-		this.bookTitle = bookTitle;
-		this.bookISBN = bookISBN;
-		this.dateFrom = dateFrom;
-		this.dateTo = dateTo;
+	public Book() {
+		this.bookISBN = new RandomString(15).nextString().toUpperCase();
 	}
 
 	public String getBookTitle() {
 		return bookTitle;
 	}
 
-	public Date getDateFrom() {
+	public String getDateFrom() {
 		return dateFrom;
 	}
 
-	public Date getDateTo() {
+	public String getDateTo() {
 		return dateTo;
 	}
 
@@ -31,11 +30,11 @@ public class Book {
 		this.bookTitle = bookTitle;
 	}
 
-	public void setDateFrom(Date dateFrom) {
+	public void setDateFrom(String dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public void setDateTo(Date dateTo) {
+	public void setDateTo(String dateTo) {
 		this.dateTo = dateTo;
 	}
 
