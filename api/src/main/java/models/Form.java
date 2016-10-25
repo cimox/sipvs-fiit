@@ -1,10 +1,10 @@
 package models;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +52,7 @@ public class Form {
 			// root elements
 			documentXML = docBuilder.newDocument();
 			Element rootElement = documentXML.createElement("rental");
+			rootElement.setAttribute("xmlns", "http://some.uri.org");
 			documentXML.appendChild(rootElement);
 
 			// staff elements
@@ -140,7 +141,7 @@ public class Form {
 
 	public void transformToHTML() {
 		TransformerFactory factory = TransformerFactory.newInstance();
-		Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xslt"));
+		Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xsl"));
 		try {
 			Transformer transformer = factory.newTransformer(xslt);
 			Source text = new StreamSource(new File("api/src/main/resources/public/data/form.xml"));
@@ -154,6 +155,7 @@ public class Form {
 	}
 
     public String validateXML() {
+		System.out.println("Validating XML");
         ValidatorXML validatorXML = new ValidatorXML();
         String validationResult = "Error";
         try {
@@ -167,6 +169,11 @@ public class Form {
 
         return validationResult;
     }
+
+	public String readFile(String path, Charset encoding)  throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
+	}
 
     public class ValidatorXML {
 

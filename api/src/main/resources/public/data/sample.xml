@@ -1,31 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rental>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rental xmlns="http://some.uri.org">
     <person>
         <firstName>Matus</firstName>
         <lastName>Cimerman</lastName>
         <email>matus.cimerman@gmail.com</email>
-        <notification>5</notification> <!-- 5 days before rental expiration -->
+        <notification>7</notification>
         <address>
-        	<street>Ilkovicova</street>
+            <street>Ilkovicova</street>
             <streetNumber>2</streetNumber>
-        	<postalCode>83101</postalCode>
-        	<city>Bratislava</city>
-        	<country>Slovakia</country>
+            <postalCode>83101</postalCode>
+            <city>Bratislava</city>
+            <country>Slovakia</country>
         </address>
     </person>
-    <book isbn="ISBN-1">
-        <title>Harry Potter 1</title>
-        <dateFrom>2016-10-01</dateFrom>
-        <dateTo>2016-10-31</dateTo>
-    </book>
-    <book isbn="ISBN-12">
+    <book isbn="282T7KLCY31J244">
         <title>Harry Potter 2</title>
         <dateFrom>2016-10-01</dateFrom>
-        <dateTo>2016-11-30</dateTo>
-    </book>
-    <book isbn="ISBN-13">
-        <title>Harry Potter 3</title>
-        <dateFrom>2016-10-01</dateFrom>
-        <dateTo>2016-12-31</dateTo>
+        <dateTo>2016-10-31</dateTo>
     </book>
 </rental>
