@@ -77,7 +77,7 @@ public class Api {
         });
 
         get("/xsl-content", (request, response) -> {
-            String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xslt", StandardCharsets.UTF_8);
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
 
             return xmlContent;
         });

@@ -52,6 +52,7 @@ public class Form {
 			// root elements
 			documentXML = docBuilder.newDocument();
 			Element rootElement = documentXML.createElement("rental");
+//			rootElement.setAttribute("xmlns", "http://some.uri.org");
 			documentXML.appendChild(rootElement);
 
 			// staff elements
@@ -140,7 +141,7 @@ public class Form {
 
 	public void transformToHTML() {
 		TransformerFactory factory = TransformerFactory.newInstance();
-		Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xslt"));
+		Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xsl"));
 		try {
 			Transformer transformer = factory.newTransformer(xslt);
 			Source text = new StreamSource(new File("api/src/main/resources/public/data/form.xml"));

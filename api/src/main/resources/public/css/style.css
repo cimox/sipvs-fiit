@@ -5,3 +5,7 @@ div#add-book-wrapper {
 div#remove-book-wrapper {
     padding-top: 28px;
 }
+
+body {
+    background-color: #CFCFCF;
+}

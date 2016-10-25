@@ -2,13 +2,13 @@
  * Created by cimo on 10/25/2016.
  */
 
-var datePickers = document.getElementsByClassName('datepicker');
-Array.prototype.forEach.call(datePickers, function (datepicker) {
-    new Pikaday({
-        field: datepicker,
-        format: 'YYYY-MM-DD'
-    });
-});
+// var datePickers = document.getElementsByClassName('datepicker');
+// Array.prototype.forEach.call(datePickers, function (datepicker) {
+//     new Pikaday({
+//         field: datepicker,
+//         format: 'YYYY-MM-DD'
+//     });
+// });
 
 // add book button
 $('a.add-book').on('click', function () {
