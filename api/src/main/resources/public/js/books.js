@@ -132,7 +132,7 @@ $('form').on('click', 'a.button.sign', function (e) {
             xsdContent = data;
             // console.log('xsd content: ' + xsdContent);
 
-            xsdURI = 'http://some.server.com/novyzaznam.xsd';
+            xsdURI = 'http://localhost:4567/data/schema.xsd';
             xsdNSURI = 'http://some.uri.org';
             console.log('XSD loaded');
         });
@@ -142,29 +142,18 @@ $('form').on('click', 'a.button.sign', function (e) {
             xslContent = data;
             // console.log('xsd content: ' + xsdContent);
 
-            xslURI = 'http://some.server.com/novyzaznam.xslt';
+            xslURI = 'http://localhost:4567/data/transform.xslt';
             console.log('XSL loaded');
         });
-    }
+    };
 
 
     doSign = function (oXML, oXMLPlugin, xml, xsd, xsdURI, xsdNSURI, xsl, XSLURI) {
-        // var xml = document.getElementById('iXML').value;
-        // var oXML=new ActiveXObject("DSig.XadesSigAtl");
-        // var oXMLPlugin=new ActiveXObject("DSig.XmlPluginAtl");
-        //
-        // var xsd = document.getElementById('iXSD').value;
-        // var xsdURI = document.getElementById('iXSDURI').value;
-        // var xsdNSURI = document.getElementById('iXSDNSURI').value;
-        //
-        // var xsl = document.getElementById('iXSL').value;
-        // var xslURI = document.getElementById('iXSLURI').value;
-
         console.log('calling DSign');
 
         var obj = null;
         // if (!document.getElementById('cbCO2').checked) {
-        obj = oXMLPlugin.CreateObject('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI);
+        obj = oXMLPlugin.CreateObject2('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
         // }
         // else {
         //     obj = oXMLPlugin.CreateObject2('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'TXT');

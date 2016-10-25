@@ -52,7 +52,7 @@ public class Form {
 			// root elements
 			documentXML = docBuilder.newDocument();
 			Element rootElement = documentXML.createElement("rental");
-//			rootElement.setAttribute("xmlns", "http://some.uri.org");
+			rootElement.setAttribute("xmlns", "http://some.uri.org");
 			documentXML.appendChild(rootElement);
 
 			// staff elements
