@@ -1,53 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://some.uri.org" xmlns="http://some.uri.org">
-	<xs:element name="rental">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="person" type="person" />
-				<xs:element name="book" type="book" minOccurs="1" maxOccurs="10"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="http://some.uri.org" xmlns="http://some.uri.org">
+    <xs:element name="rental">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="person" type="person"/>
+                <xs:element name="book" type="book" minOccurs="1" maxOccurs="10"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
-
-	<!-- complex types -->
-	<xs:complexType name="person">
-		<xs:sequence>
-			<xs:element name="firstName" type="xs:string" />
-			<xs:element name="lastName" type="xs:string" />
-			<xs:element name="email" type="xs:string" />
-			<xs:element name="notification" type="xs:integer" default="7" /> <!-- in days -->
-			<!--<xs:element name="cardID" type="xs:string" />-->
-			<xs:element name="address" type="address" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="address">
-		<xs:sequence>
-			<xs:element name="street" type="xs:string" />
-			<xs:element name="streetNumber">
-				<xs:simpleType>
-					<xs:restriction base="xs:integer">
-						<xs:totalDigits value="5"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="postalCode">
-				<xs:simpleType>
-					<xs:restriction base="xs:integer">
-						<xs:totalDigits value="5"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="city" type="xs:string" />
-			<xs:element name="country" type="xs:string" default="Slovakia" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="book">
-		<xs:sequence>
-			<xs:element name="title" type="xs:string" />
-			<xs:element name="dateFrom" type="xs:date" />
-			<xs:element name="dateTo" type="xs:date" />
-		</xs:sequence>
-		<xs:attribute name="isbn" type="xs:string" />
-	</xs:complexType>
+rdID" type="xs:string" />-->
+            <xs:element name="address" type="address"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="address">
+        <xs:sequence>
+            <xs:element name="street" type="xs:string"/>
+            <xs:element name="streetNumber">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:totalDigits value="5"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="postalCode">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:totalDigits value="5"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="city" type="xs:string"/>
+            <xs:element name="country" type="xs:string" default="Slovakia"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="book">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="dateFrom" type="xs:date"/>
+            <xs:element name="dateTo" type="xs:date"/>
+        </xs:sequence>
+        <xs:attribute name="isbn" type="xs:string"/>
+    </xs:complexType>
 </xs:schema>

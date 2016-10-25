@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +81,16 @@ public class Api {
             String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
 
             return xmlContent;
+        });
+
+        post("/save-signed", (request, response) -> {
+            // read request content and same XML
+            PrintWriter signedXML = new PrintWriter("api/src/main/resources/public/data/signed.xml");
+            signedXML.println(request.body());
+            signedXML.close();
+            System.out.println("Signed XML saved");
+
+            return "success";
         });
     }
 }
