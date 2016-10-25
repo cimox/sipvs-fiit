@@ -30,3 +30,4 @@ api/target/classes/resources/public/data/form.xml
 api/target/classes/resources/public/data/form.html
 
 .idea/workspace.xml
+target/*

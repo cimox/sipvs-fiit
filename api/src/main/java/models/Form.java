@@ -155,6 +155,7 @@ public class Form {
 	}
 
     public String validateXML() {
+		System.out.println("Validating XML");
         ValidatorXML validatorXML = new ValidatorXML();
         String validationResult = "Error";
         try {
