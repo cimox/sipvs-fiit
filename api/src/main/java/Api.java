@@ -59,6 +59,33 @@ public class Api {
             return false;
         });
 
+        // get form.xml
+        get("/xml", (request, response) -> {
+            response.type("application/octet-stream");
+            response.header("Content-Disposition","attachment; filename=\"data/form.xml\"");
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/form.xml", StandardCharsets.UTF_8);
+
+            return xmlContent;
+        });
+
+        // get signed.xml
+        get("/xml-signed", (request, response) -> {
+            response.type("application/octet-stream");
+            response.header("Content-Disposition","attachment; filename=\"data/signed.xml\"");
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/signed.xml", StandardCharsets.UTF_8);
+
+            return xmlContent;
+        });
+
+        // get form.html
+        get("/html", (request, response) -> {
+            response.type("application/octet-stream");
+            response.header("Content-Disposition","attachment; filename=\"data/form.html\"");
+            String htmlContent = new Form().readFile("api/src/main/resources/public/data/form.html", StandardCharsets.UTF_8);
+
+            return htmlContent;
+        });
+
         // validate XML
         get("/validate", (request, response) -> {
             String validationResult = new Form().validateXML();
