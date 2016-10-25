@@ -1,10 +1,10 @@
 package models;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -167,6 +167,11 @@ public class Form {
 
         return validationResult;
     }
+
+	public String readFile(String path, Charset encoding)  throws IOException {
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
+	}
 
     public class ValidatorXML {
 

@@ -1,1 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><rental><person><firstName>Matus</firstName><lastName>Cimerman</lastName><email>matus.cimerman@gmail.com</email><notification>7</notification><address><street>Ilkovicova</street><streetNumber>2</streetNumber><postalCode>83101</postalCode><city>Bratislava</city><country>Slovakia</country></address></person><book isbn="V474YZHI6SMJEYR"><title>Harry Potter 11</title><dateFrom>2016-10-01</dateFrom><dateTo>2016-10-31</dateTo></book><book isbn="2Y1SC9N0KGLYE4P"><title>Harry Potter 11</title><dateFrom>2016-10-01</dateFrom><dateTo>2016-10-31</dateTo></book><book isbn="EIQO5WHNIGOB47B"><title>Harry Potter 11</title><dateFrom>2016-10-01</dateFrom><dateTo>2016-10-31</dateTo></book><book isbn="D8L21INBH51TEWB"><title>Harry Potter 11</title><dateFrom>2016-10-01</dateFrom><dateTo>2016-10-31</dateTo></book></rental>
+<rental xmlns="http://some.uri.org">
+    <person>
+        <firstName>Matus</firstName>
+        <lastName>Cimerman</lastName>
+        <email>matus.cimerman@gmail.com</email>
+        <notification>7</notification>
+        <address>
+            <street>Ilkovicova</street>
+            <streetNumber>2</streetNumber>
+            <postalCode>83101</postalCode>
+            <city>Bratislava</city>
+            <country>Slovakia</country>
+        </address>
+    </person>
+    <book isbn="ER6OV8CO9FXHCAN">
+        <title>Harry Potter 1</title>
+        <dateFrom>2016-10-01</dateFrom>
+        <dateTo>2016-10-31</dateTo>
+    </book>
+</rental>

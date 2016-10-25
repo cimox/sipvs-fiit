@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +62,24 @@ public class Api {
         get("/validate", (request, response) -> {
             String validationResult = new Form().validateXML();
             return validationResult;
+        });
+
+        get("/xml-content", (request, response) -> {
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/form.xml", StandardCharsets.UTF_8);
+
+            return xmlContent;
+        });
+
+        get("/xsd-content", (request, response) -> {
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/schema.xsd", StandardCharsets.UTF_8);
+
+            return xmlContent;
+        });
+
+        get("/xsl-content", (request, response) -> {
+            String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xslt", StandardCharsets.UTF_8);
+
+            return xmlContent;
         });
     }
 }
