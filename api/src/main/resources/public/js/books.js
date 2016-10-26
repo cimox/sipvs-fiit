@@ -85,7 +85,7 @@ readFormData = function () {
 
     return formData;
 };
-createXML = function () {
+createXML = function (fn) {
     console.log('creating xml');
     var formData = readFormData();
 
@@ -95,6 +95,7 @@ createXML = function () {
         dataType: "json",
         data: JSON.stringify(formData),
         success: function () {
+            if (fn != undefined) fn();
             console.log('XML file created');
         }
     });
@@ -116,99 +117,113 @@ $('form').on('click', 'a.button.create-xml', function () {
 
 // save XML
 $('form').on('click', 'a.button.save-xml', function (e) {
-    createXML();
-    console.log('saving xml...' + $(this).attr('href'));
+    console.log('saving xml...');
+    _saveXML = function () {
+        window.location.href('/xml');
+    };
+    createXML(_saveXML);
 });
 
 // validate XML
 $('form').on('click', 'a.button.validate-xml', function (e) {
     console.log('validating XML');
-    // createXML(); // siltently create XML on background before validation
-    $.get('/validate', function (validationResult) {
-        alert(validationResult);
-    });
+
+    _validate = function () {
+        $.get('/validate', function (validationResult) {
+            showSignResult(validationResult, true);
+        });
+    };
+
+    createXML(_validate);
 });
 
 // save HTML
 $('form').on('click', 'a.button.save-html', function (e) {
-    createXML();
     console.log('saving HTML...');
+    _saveHTML = function () {
+        window.location.href('/html');
+    };
+    createXML(_saveHTML);
 });
+
 
 // sign document
 $('form').on('click', 'a.button.sign', function (e) {
+    //TODO: remove setTimeout, it's shitty solution
     console.log('signing document...');
-    createXML();
-    var xmlContent, xsdContent, xslContent, xsdURI, xsdNSURI, xslURI;
-    $.get('/xml-content', function (data) {
-        xmlContent = data;
-        console.log('xml content: ' + data);
+    _sign = function () {
+        var xmlContent, xsdContent, xslContent, xsdURI, xsdNSURI, xslURI;
+        $.get('/xml-content', function (data) {
+            xmlContent = data;
+            console.log('xml content: ' + data);
 
-        var oXML = new ActiveXObject("DSig.XadesSigAtl");
-        var oXMLPlugin = new ActiveXObject("DSig.XmlPluginAtl");
-        console.log('oXML loaded');
-        loadXSD();
-        loadXSL();
+            var oXML = new ActiveXObject("DSig.XadesSigAtl");
+            var oXMLPlugin = new ActiveXObject("DSig.XmlPluginAtl");
+            console.log('oXML loaded');
+            loadXSD();
+            loadXSL();
 
-        setTimeout(function () {
-            console.log('2s...');
-            doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI)
-        }, 1500);
-        // setTimeout(doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI), 2000);
-    });
-
-    loadXSD = function () {
-        $.get('/xsd-content', function (data) {
-            xsdContent = data;
-            // console.log('xsd content: ' + xsdContent);
-
-            xsdURI = 'http://localhost:4567/data/schema.xsd';
-            xsdNSURI = 'http://some.uri.org';
-            console.log('XSD loaded');
+            setTimeout(function () {
+                console.log('2s...');
+                doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI)
+            }, 1500);
+            // setTimeout(doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI), 2000);
         });
-    };
-    loadXSL = function () {
-        $.get('/xsl-content', function (data) {
-            xslContent = data;
-            // console.log('xsd content: ' + xsdContent);
 
-            xslURI = 'http://localhost:4567/data/transform.xslt';
-            console.log('XSL loaded');
-        });
-    };
+        loadXSD = function () {
+            $.get('/xsd-content', function (data) {
+                xsdContent = data;
+                // console.log('xsd content: ' + xsdContent);
 
-    doSign = function (oXML, oXMLPlugin, xml, xsd, xsdURI, xsdNSURI, xsl, XSLURI) {
-        console.log('calling DSign');
-
-        var obj = null;
-        obj = oXMLPlugin.CreateObject2('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
-
-        if (obj == null) {
-            showSignResult(oXMLPlugin.ErrorMessage, true);
-            return;
-        }
-
-        var addObj = oXML.AddObject(obj);
-        if (addObj != 0) {
-            showSignResult(oXMLPlugin.ErrorMessage, true);
-            return;
-        }
-
-        var res = oXML.Sign('signatureId10', 'sha256', 'urn:oid:1.3.158.36061701.1.2.1');
-        if (res == 0) {
-            $.ajax({
-                type: "POST",
-                url: "/save-signed",
-                dataType: "json",
-                data: oXML.SignedXMLWithEnvelope,
-                success: function () {
-                    console.log('signed XML saved');
-                }
+                xsdURI = 'http://localhost:4567/data/schema.xsd';
+                xsdNSURI = 'http://some.uri.org';
+                console.log('XSD loaded');
             });
-            showSignResult("Success", false);
-        }
-        else {
-            $('p.sign-result').text(oXML.ErrorMessage, true);
-        }
+        };
+        loadXSL = function () {
+            $.get('/xsl-content', function (data) {
+                xslContent = data;
+                // console.log('xsd content: ' + xsdContent);
+
+                xslURI = 'http://localhost:4567/data/transform.xslt';
+                console.log('XSL loaded');
+            });
+        };
+
+        doSign = function (oXML, oXMLPlugin, xml, xsd, xsdURI, xsdNSURI, xsl, XSLURI) {
+            console.log('calling DSign');
+
+            var obj = null;
+            obj = oXMLPlugin.CreateObject2('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
+
+            if (obj == null) {
+                showSignResult(oXMLPlugin.ErrorMessage, true);
+                return;
+            }
+
+            var addObj = oXML.AddObject(obj);
+            if (addObj != 0) {
+                showSignResult(oXMLPlugin.ErrorMessage, true);
+                return;
+            }
+
+            var res = oXML.Sign('signatureId10', 'sha256', 'urn:oid:1.3.158.36061701.1.2.1');
+            if (res == 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/save-signed",
+                    dataType: "json",
+                    data: oXML.SignedXMLWithEnvelope,
+                    success: function () {
+                        console.log('signed XML saved');
+                    }
+                });
+                showSignResult("Success", false);
+            }
+            else {
+                $('p.sign-result').text(oXML.ErrorMessage, true);
+            }
+        };
     };
+    createXML(_sign);
 });
