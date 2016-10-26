@@ -10,6 +10,35 @@
 //     });
 // });
 
+    // Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+    modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+
+showSignResult = function (message, removeBtn) {
+    if (removeBtn == true) $('a.download-signed').hide();
+    else $('a.download-signed').show();
+    modal.style.display = "block";
+    $('p.sign-result').text(message);
+};
+
 // add book button
 $('a.add-book').on('click', function () {
     if ($('div.book-details').length < 10) {
@@ -93,8 +122,8 @@ $('form').on('click', 'a.button.save-xml', function (e) {
 
 // validate XML
 $('form').on('click', 'a.button.validate-xml', function (e) {
-    createXML(); // siltently create XML on background before validation
-    var result = false;
+    console.log('validating XML');
+    // createXML(); // siltently create XML on background before validation
     $.get('/validate', function (validationResult) {
         alert(validationResult);
     });
@@ -109,7 +138,7 @@ $('form').on('click', 'a.button.save-html', function (e) {
 // sign document
 $('form').on('click', 'a.button.sign', function (e) {
     console.log('signing document...');
-    // createXML();
+    createXML();
     var xmlContent, xsdContent, xslContent, xsdURI, xsdNSURI, xslURI;
     $.get('/xml-content', function (data) {
         xmlContent = data;
@@ -124,7 +153,7 @@ $('form').on('click', 'a.button.sign', function (e) {
         setTimeout(function () {
             console.log('2s...');
             doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI)
-        }, 2000);
+        }, 1500);
         // setTimeout(doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI), 2000);
     });
 
@@ -149,13 +178,6 @@ $('form').on('click', 'a.button.sign', function (e) {
     };
 
     doSign = function (oXML, oXMLPlugin, xml, xsd, xsdURI, xsdNSURI, xsl, XSLURI) {
-        showSignResult = function (message, removeBtn) {
-            if (removeBtn == true) $('a.download-signed').hide();
-            else $('a.download-signed').show();
-            modal.style.display = "block";
-            $('p.sign-result').text(message);
-        };
-
         console.log('calling DSign');
 
         var obj = null;
@@ -189,26 +211,4 @@ $('form').on('click', 'a.button.sign', function (e) {
             $('p.sign-result').text(oXML.ErrorMessage, true);
         }
     };
-
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-
-// When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    };
-
-// When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
 });

@@ -47,11 +47,11 @@ public class Api {
                 // create XML file
                 Form form = new Form(person);
                 boolean result = form.createXML();
+                if (result == true) {
+                    // silently create HTML file
+                    form.transformToHTML();
+                }
 
-                // silently create HTML file
-                form.transformToHTML();
-
-                System.out.println("XML created");
                 return true;
             } catch (JsonParseException e) {
                 System.out.println("Error parsing json: " + e.getMessage());

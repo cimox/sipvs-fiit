@@ -129,7 +129,7 @@ public class Form {
             DOMSource source = new DOMSource(document);
             StreamResult result = new StreamResult("api/src/main/resources/public/data/form.xml");
             transformer.transform(source, result);
-
+			System.out.println("XML created");
             return true;
         } catch (TransformerConfigurationException e1) {
             e1.printStackTrace();
