@@ -165,7 +165,7 @@ $('form').on('click', 'a.button.sign', function (e) {
 
             setTimeout(function () {
                 console.log('2s...');
-                doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI)
+                doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI);
             }, 1500);
             // setTimeout(doSign(oXML, oXMLPlugin, xmlContent, xsdContent, xsdURI, xsdNSURI, xslContent, xslURI), 2000);
         });
@@ -193,8 +193,9 @@ $('form').on('click', 'a.button.sign', function (e) {
         doSign = function (oXML, oXMLPlugin, xml, xsd, xsdURI, xsdNSURI, xsl, XSLURI) {
             console.log('calling DSign');
 
-            var obj = null;
-            obj = oXMLPlugin.CreateObject2('objectId', 'Nový záznam', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
+            var obj = null, obj_new = null;
+            obj = oXMLPlugin.CreateObject2('objectId', 'Book rental', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
+            obj_new = oXMLPlugin.CreateObject2('objectId2', 'Book rental 2', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
 
             if (obj == null) {
                 showSignResult(oXMLPlugin.ErrorMessage, true);
@@ -202,6 +203,7 @@ $('form').on('click', 'a.button.sign', function (e) {
             }
 
             var addObj = oXML.AddObject(obj);
+            addObj = oXML.AddObject(obj_new);
             if (addObj != 0) {
                 showSignResult(oXMLPlugin.ErrorMessage, true);
                 return;
