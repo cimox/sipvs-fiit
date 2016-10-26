@@ -23,12 +23,9 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-api/src/main/resources/public/data/form.xml
-api/src/main/resources/public/data/form.html
-api/src/main/resources/public/data/signed.xml
+/api/src/main/resources/public/data/form.xml
+/api/src/main/resources/public/data/form.html
+/api/src/main/resources/public/data/signed.xml
 
-api/target/*
-
-
-.idea/workspace.xml
-target/*
+/.idea/workspace.xml
+/api/target/
