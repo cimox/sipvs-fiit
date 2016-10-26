@@ -195,17 +195,17 @@ $('form').on('click', 'a.button.sign', function (e) {
 
             var obj = null, obj_new = null;
             obj = oXMLPlugin.CreateObject2('objectId', 'Book rental', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
-            obj_new = oXMLPlugin.CreateObject2('objectId2', 'Book rental 2', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
+            obj_new = oXMLPlugin.CreateObject2('objectId', 'Book rental 2', xml, xsd, xsdNSURI, xsdURI, xsl, xslURI, 'HTML');
 
             if (obj == null) {
-                showSignResult(oXMLPlugin.ErrorMessage, true);
+                showSignResult(oXMLPlugin.ErrorMessage + '\n' + oXML.ErrorMessagee, true);
                 return;
             }
 
             var addObj = oXML.AddObject(obj);
             addObj = oXML.AddObject(obj_new);
             if (addObj != 0) {
-                showSignResult(oXMLPlugin.ErrorMessage, true);
+                showSignResult(oXMLPlugin.ErrorMessage + '\n' + oXML.ErrorMessage, true);
                 return;
             }
 
@@ -223,7 +223,7 @@ $('form').on('click', 'a.button.sign', function (e) {
                 showSignResult("Success", false);
             }
             else {
-                $('p.sign-result').text(oXML.ErrorMessage, true);
+                showSignResult(oXMLPlugin.ErrorMessage + '\n' + oXML.ErrorMessagee, true);
             }
         };
     };

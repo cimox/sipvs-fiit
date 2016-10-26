@@ -25,9 +25,10 @@ buildNumber.properties
 
 api/src/main/resources/public/data/form.xml
 api/src/main/resources/public/data/form.html
+api/src/main/resources/public/data/signed.xml
 
-api/target/classes/resources/public/data/form.xml
-api/target/classes/resources/public/data/form.html
+api/target/*
+
 
 .idea/workspace.xml
 target/*
