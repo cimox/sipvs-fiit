@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static spark.Spark.*;
 
+
 public class Api {
     static boolean localhost = true;
     static Logger log = LoggerFactory.getLogger(Api.class);
@@ -99,15 +100,15 @@ public class Api {
         });
 
         get("/xsd-content", (request, response) -> {
-            String xmlContent = new Form().readFile("api/src/main/resources/public/data/schema.xsd", StandardCharsets.UTF_8);
+            String xsdContent = new Form().readFile("api/src/main/resources/public/data/schema.xsd", StandardCharsets.UTF_8);
 
-            return xmlContent;
+            return xsdContent;
         });
 
         get("/xsl-content", (request, response) -> {
-            String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
+            String xslContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
 
-            return xmlContent;
+            return xslContent;
         });
 
         post("/save-signed", (request, response) -> {
@@ -118,6 +119,15 @@ public class Api {
             System.out.println("Signed XML saved");
 
             return "success";
+        });
+
+        get("/timestamp", (request, response) -> {
+            System.out.println("Adding timestamp");
+            String xmlSigned = new Form().readFile("api/src/main/resources/public/data/signed.xml", StandardCharsets.UTF_8);
+
+            Utils.addTimestamp();
+
+            return "OK";
         });
     }
 }
