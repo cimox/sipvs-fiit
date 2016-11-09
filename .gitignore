@@ -29,3 +29,5 @@ buildNumber.properties
 /.idea/workspace.xml
 /api/target/
 /api/src/main/resources/public/data/signed.xml
+/api/src/main/resources/public/data/stamp.raw
+/api/src/main/resources/public/data/stamped.xml

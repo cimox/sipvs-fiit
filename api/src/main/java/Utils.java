@@ -1,70 +1,114 @@
-import com.sun.deploy.net.HttpResponse;
-import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.tsp.TimeStampResp;
-import org.bouncycastle.tsp.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.bind.Element;
-import javax.xml.crypto.dsig.XMLSignature;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.math.BigInteger;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
+import java.net.URLConnection;
+import java.util.Arrays;
 
-/**
- * Created by cimo on 11/8/2016.
- */
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.bouncycastle.tsp.TSPException;
+import org.bouncycastle.*;
+import org.bouncycastle.tsp.TimeStampResponse;
+import org.bouncycastle.tsp.TimeStampToken;
+import org.bouncycastle.util.encoders.Base64;
+import org.xml.sax.SAXException;
+
 
 public abstract class Utils {
+    private static String stamped = "";
 
-    public static void addTimestamp() {
-        String TSAUrl = "http://test.ditec.sk/timestampws/TS.aspx";
-        byte[] digest = "A73Lu1KNvEn05tzitoeGSN8G66OYSIHlRXRaRA3B1iQ=".getBytes();
-        OutputStream out = null;
+    public static String addTimestamp(String signedXML) throws TransformerConfigurationException, TransformerException, ParserConfigurationException, SAXException, IOException, TSPException {
+        stamped = timeStamp(signedXML);
+        System.out.println(stamped);
+        return stamped;
+    }
+
+    public static String timeStamp(String input) throws TSPException {
+        String server = "http://test.ditec.sk/timestampws/TS.asmx";
+        String encodedTimestamp = "";
+
+        String signWrapper = input;
+        signWrapper = signWrapper.substring(signWrapper.indexOf("<ds:SignatureValue Id=\"signatureIdSignatureValue\">") + 50);
+        signWrapper = signWrapper.substring(0, signWrapper.indexOf("</ds:SignatureValue>"));
 
         try {
-            TimeStampRequestGenerator reqgen = new TimeStampRequestGenerator();
-            TimeStampRequest req = reqgen.generate(TSPAlgorithms.SHA1, digest);
-            byte request[] = req.getEncoded();
+            URL tsURL = new URL(server);
+            HttpURLConnection tsConnection = (HttpURLConnection) tsURL.openConnection();
 
-            URL url = new URL(TSAUrl);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            tsConnection.setDoOutput(true);
+            tsConnection.setDoInput(true);
+            tsConnection.setRequestMethod("POST");
+            tsConnection.setRequestProperty("Content-Type", "text/xml; charset=utf-8");
+            tsConnection.setRequestProperty("SOAPAction", "http://www.ditec.sk/GetTimestamp");
 
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-type", "application/timestamp-query");
+            OutputStream out = tsConnection.getOutputStream();
+            Writer wout = new OutputStreamWriter(out);
+            wout.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                    "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                    "  <soap:Body>\n" +
+                    "    <GetTimestamp xmlns=\"http://www.ditec.sk/\">\n" +
+                    "      <dataB64>" + Base64.toBase64String(signWrapper.getBytes()) + "</dataB64>\n" +
+                    "    </GetTimestamp>\n" +
+                    "  </soap:Body>\n" +
+                    "</soap:Envelope>");
 
-            con.setRequestProperty("Content-length", String.valueOf(request.length));
-            out = con.getOutputStream();
-            out.write(request);
-            out.flush();
 
-            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new IOException("Received HTTP error: " + con.getResponseCode() + " - " + con.getResponseMessage());
+            wout.flush(); wout.close();
+
+            InputStream in = tsConnection.getInputStream();
+            int c; String response = "";
+            while ((c = in.read()) != -1) response = response + (char) c;
+            in.close();
+
+            int i = response.indexOf("<GetTimestampResult>");
+            response = response.substring(i + 20);
+            i = response.indexOf("</GetTimestampResult>");
+            response = response.substring(0, i);
+
+
+            try {
+//                TimeStampResponse resp = new TimeStampResponse(Base64Coder.decode(response));
+                TimeStampResponse resp = new TimeStampResponse(Base64.decode(response));
+                TimeStampToken tsToken = resp.getTimeStampToken();
+
+                encodedTimestamp = Base64Coder.encodeString(Base64Coder.encodeLines(tsToken.getEncoded()));
+//                encodedTimestamp = Base64.toBase64String(tsToken.getEncoded());
+            } catch (TSPException e) {
+                e.printStackTrace();
             }
 
-            InputStream in = con.getInputStream();
-            System.out.println(in.read());
-            TimeStampResp resp = TimeStampResp.getInstance(new ASN1InputStream(in).readObject());
-            TimeStampResponse response = new TimeStampResponse(resp);
-            response.validate(req);
-
-            System.out.println(response.getTimeStampToken().getTimeStampInfo().getGenTime());
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e);
         }
+        return encodedTimestamp;
+    }
 
+    public static String createStamped(String xml, String stamp) {
+        String stamped = "";
+        int i = xml.lastIndexOf("</xades:SignedProperties>");
+        stamped = xml.substring(0, i + 25);
+        stamped += "<xades:UnsignedProperties>";
+        stamped += "<xades:UnsignedSignatureProperties>";
+        stamped += "<xades:SignatureTimeStamp Id=\"signatureIdSignatureTimeStamp\">";
+        stamped += "<xades:EncapsulatedTimeStamp>";
+        stamped += stamp;
+        stamped += "</xades:EncapsulatedTimeStamp>";
+        stamped += "</xades:SignatureTimeStamp>";
+        stamped += "</xades:UnsignedSignatureProperties>";
+        stamped += "</xades:UnsignedProperties>";
+        stamped += xml.substring(i + 25);
+        return stamped;
     }
 }
