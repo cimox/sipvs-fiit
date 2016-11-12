@@ -229,3 +229,10 @@ $('form').on('click', 'a.button.sign', function (e) {
     };
     createXML(_sign);
 });
+
+// add timestamp
+$('form').on('click', 'a.button.timestamp', function (e) {
+    $.get('/timestamp', function (data) {
+        console.log('Timestamp requested');
+    });
+});

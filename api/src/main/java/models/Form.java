@@ -1,6 +1,5 @@
 package models;
 
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -28,97 +27,100 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXParseException;
 
+import org.bouncycastle.tsp.TimeStampRequest;
+import org.bouncycastle.tsp.TimeStampResponse;
+
 public class Form {
-	private List personBooks;
-	private Person person;
+    private List personBooks;
+    private Person person;
     private Address personAddress;
 
-    public Form(){
+    public Form() {
 
     }
 
-	public Form(Person person) {
-		this.person = person;
+    public Form(Person person) {
+        this.person = person;
         this.personAddress = person.getAddress();
         this.personBooks = person.getBooks();
-	}
+    }
 
-	protected Document generateDocument() {
-		Document documentXML = null;
-		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    protected Document generateDocument() {
+        Document documentXML = null;
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-			// root elements
-			documentXML = docBuilder.newDocument();
-			Element rootElement = documentXML.createElement("rental");
-			rootElement.setAttribute("xmlns", "http://some.uri.org");
-			documentXML.appendChild(rootElement);
+            // root elements
+            documentXML = docBuilder.newDocument();
+            Element rootElement = documentXML.createElement("rental");
+            rootElement.setAttribute("xmlns", "http://some.uri.org");
+            documentXML.appendChild(rootElement);
 
-			// staff elements
-			Element person = documentXML.createElement("person");
-			rootElement.appendChild(person);
+            // staff elements
+            Element person = documentXML.createElement("person");
+            rootElement.appendChild(person);
 
-			// firstname elements
-			Element firstname = documentXML.createElement("firstName");
-			firstname.appendChild(documentXML.createTextNode(this.person.getFirstName()));
-			person.appendChild(firstname);
+            // firstname elements
+            Element firstname = documentXML.createElement("firstName");
+            firstname.appendChild(documentXML.createTextNode(this.person.getFirstName()));
+            person.appendChild(firstname);
 
-			// lastname elements
-			Element lastname = documentXML.createElement("lastName");
-			lastname.appendChild(documentXML.createTextNode(this.person.getLastName()));
-			person.appendChild(lastname);
+            // lastname elements
+            Element lastname = documentXML.createElement("lastName");
+            lastname.appendChild(documentXML.createTextNode(this.person.getLastName()));
+            person.appendChild(lastname);
 
-			// email elements
-			Element email = documentXML.createElement("email");
-			email.appendChild(documentXML.createTextNode(this.person.getEmail()));
-			person.appendChild(email);
+            // email elements
+            Element email = documentXML.createElement("email");
+            email.appendChild(documentXML.createTextNode(this.person.getEmail()));
+            person.appendChild(email);
 
-			// notification elements
-			Element notification = documentXML.createElement("notification");
-			notification.appendChild(documentXML.createTextNode(this.person.getNotification()));
-			person.appendChild(notification);
+            // notification elements
+            Element notification = documentXML.createElement("notification");
+            notification.appendChild(documentXML.createTextNode(this.person.getNotification()));
+            person.appendChild(notification);
 
-			Element address = documentXML.createElement("address");
-			person.appendChild(address);
-			Element street = documentXML.createElement("street");
-			street.appendChild(documentXML.createTextNode(this.personAddress.getStreet()));
-			address.appendChild(street);
-            Element streetNumber= documentXML.createElement("streetNumber");
+            Element address = documentXML.createElement("address");
+            person.appendChild(address);
+            Element street = documentXML.createElement("street");
+            street.appendChild(documentXML.createTextNode(this.personAddress.getStreet()));
+            address.appendChild(street);
+            Element streetNumber = documentXML.createElement("streetNumber");
             streetNumber.appendChild(documentXML.createTextNode(this.personAddress.getStreetNumber()));
             address.appendChild(streetNumber);
-			Element postalCode = documentXML.createElement("postalCode");
-			postalCode.appendChild(documentXML.createTextNode(this.personAddress.getPostalCode()));
-			address.appendChild(postalCode);
-			Element city = documentXML.createElement("city");
-			city.appendChild(documentXML.createTextNode(this.personAddress.getCity()));
-			address.appendChild(city);
-			Element country = documentXML.createElement("country");
-			country.appendChild(documentXML.createTextNode(this.personAddress.getCountry()));
-			address.appendChild(country);
+            Element postalCode = documentXML.createElement("postalCode");
+            postalCode.appendChild(documentXML.createTextNode(this.personAddress.getPostalCode()));
+            address.appendChild(postalCode);
+            Element city = documentXML.createElement("city");
+            city.appendChild(documentXML.createTextNode(this.personAddress.getCity()));
+            address.appendChild(city);
+            Element country = documentXML.createElement("country");
+            country.appendChild(documentXML.createTextNode(this.personAddress.getCountry()));
+            address.appendChild(country);
 
-			for (Book book : (LinkedList<Book>) this.personBooks) {
-				Element bookElement = documentXML.createElement("book");
-				bookElement.setAttribute("isbn", book.getBookISBN());
-				rootElement.appendChild(bookElement);
-				Element title = documentXML.createElement("title");
-				title.appendChild(documentXML.createTextNode(book.getBookTitle()));
-				bookElement.appendChild(title);
-				Element dateFrom = documentXML.createElement("dateFrom");
-				dateFrom.appendChild(documentXML.createTextNode(book.getDateFrom()));
-				bookElement.appendChild(dateFrom);
-				Element dateTo = documentXML.createElement("dateTo");
-				dateTo.appendChild(documentXML.createTextNode(book.getDateTo()));
-				bookElement.appendChild(dateTo);
-			}
+            for (Book book : (LinkedList<Book>) this.personBooks) {
+                Element bookElement = documentXML.createElement("book");
+                bookElement.setAttribute("isbn", book.getBookISBN());
+                rootElement.appendChild(bookElement);
+                Element title = documentXML.createElement("title");
+                title.appendChild(documentXML.createTextNode(book.getBookTitle()));
+                bookElement.appendChild(title);
+                Element dateFrom = documentXML.createElement("dateFrom");
+                dateFrom.appendChild(documentXML.createTextNode(book.getDateFrom()));
+                bookElement.appendChild(dateFrom);
+                Element dateTo = documentXML.createElement("dateTo");
+                dateTo.appendChild(documentXML.createTextNode(book.getDateTo()));
+                bookElement.appendChild(dateTo);
+            }
 
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		}
-		return documentXML;
-	}
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        }
+        return documentXML;
+    }
 
-	public boolean createXML() {
+    public boolean createXML() {
         // write the content into xml file
         Document document = this.generateDocument();
 
@@ -129,7 +131,7 @@ public class Form {
             DOMSource source = new DOMSource(document);
             StreamResult result = new StreamResult("api/src/main/resources/public/data/form.xml");
             transformer.transform(source, result);
-			System.out.println("XML created");
+            System.out.println("XML created");
             return true;
         } catch (TransformerConfigurationException e1) {
             e1.printStackTrace();
@@ -139,23 +141,23 @@ public class Form {
         return false;
     }
 
-	public void transformToHTML() {
-		TransformerFactory factory = TransformerFactory.newInstance();
-		Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xsl"));
-		try {
-			Transformer transformer = factory.newTransformer(xslt);
-			Source text = new StreamSource(new File("api/src/main/resources/public/data/form.xml"));
-			transformer.transform(text, new StreamResult(new File("api/src/main/resources/public/data/form.html")));
+    public void transformToHTML() {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Source xslt = new StreamSource(new File("api/src/main/resources/public/data/transform.xsl"));
+        try {
+            Transformer transformer = factory.newTransformer(xslt);
+            Source text = new StreamSource(new File("api/src/main/resources/public/data/form.xml"));
+            transformer.transform(text, new StreamResult(new File("api/src/main/resources/public/data/form.html")));
             System.out.println("HTML created");
-		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String validateXML() {
-		System.out.println("Validating XML");
+        System.out.println("Validating XML");
         ValidatorXML validatorXML = new ValidatorXML();
         String validationResult = "Error";
         try {
@@ -170,10 +172,10 @@ public class Form {
         return validationResult;
     }
 
-	public String readFile(String path, Charset encoding)  throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return new String(encoded, encoding);
-	}
+    public String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
+    }
 
     public class ValidatorXML {
 

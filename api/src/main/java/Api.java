@@ -6,11 +6,18 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Form;
 import models.Person;
+import org.bouncycastle.tsp.TSPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -18,11 +25,12 @@ import java.util.Map;
 
 import static spark.Spark.*;
 
+
 public class Api {
     static boolean localhost = true;
     static Logger log = LoggerFactory.getLogger(Api.class);
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IOException, ParserConfigurationException, TSPException, SAXException, TransformerException {
         System.gc();
         if (localhost) { // absolute (kinda) path to static files. DO NOT CHANGE THIS for development
             String projectDir = System.getProperty("user.dir");
@@ -99,15 +107,15 @@ public class Api {
         });
 
         get("/xsd-content", (request, response) -> {
-            String xmlContent = new Form().readFile("api/src/main/resources/public/data/schema.xsd", StandardCharsets.UTF_8);
+            String xsdContent = new Form().readFile("api/src/main/resources/public/data/schema.xsd", StandardCharsets.UTF_8);
 
-            return xmlContent;
+            return xsdContent;
         });
 
         get("/xsl-content", (request, response) -> {
-            String xmlContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
+            String xslContent = new Form().readFile("api/src/main/resources/public/data/transform.xsl", StandardCharsets.UTF_8);
 
-            return xmlContent;
+            return xslContent;
         });
 
         post("/save-signed", (request, response) -> {
@@ -118,6 +126,31 @@ public class Api {
             System.out.println("Signed XML saved");
 
             return "success";
+        });
+
+        get("/timestamp", (request, response) -> {
+            System.out.println("Adding timestamp");
+            String signedXML = new Form().readFile("api/src/main/resources/public/data/signed.xml", StandardCharsets.UTF_8);
+            String timestamp = Utils.addTimestamp(signedXML);
+
+            BufferedWriter out;
+            try {
+                out = new BufferedWriter(new FileWriter("api/src/main/resources/public/data/stamp.raw"));
+                out.write(Base64Coder.decodeString(timestamp));
+                out.close();
+
+                out = new BufferedWriter(new FileWriter("api/src/main/resources/public/data/stamped.xml"));
+                out.write(Utils.createStamped(signedXML, timestamp));
+                out.close();
+
+                out = new BufferedWriter(new FileWriter("api/src/main/resources/public/data/signed.xml"));
+                out.write(Utils.createStamped(signedXML, timestamp));
+                out.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+            return "OK";
         });
     }
 }
