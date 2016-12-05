@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3bb23fc-a353-49df-88e6-e20e65ab4c15" name="Default" comment="Pridané prvé dve (odrážky) kontroly, súbory a doplnené gui.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/01XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/02XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/03XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/04XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/05XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/06XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/07XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/08XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/09XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/10XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/11XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/12XadesT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Priklady/XadesT.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+    <list default="true" id="a3bb23fc-a353-49df-88e6-e20e65ab4c15" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zadanie_4/MainGUI.form" afterPath="$PROJECT_DIR$/zadanie_4/MainGUI.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zadanie_4/MainGUI.java" afterPath="$PROJECT_DIR$/zadanie_4/MainGUI.java" />
     </list>
     <ignored path="sipvs-fiit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -840,7 +824,7 @@
       <workItem from="1477499761235" duration="997000" />
       <workItem from="1478381211854" duration="374000" />
       <workItem from="1480937872203" duration="488000" />
-      <workItem from="1480939200823" duration="3235000" />
+      <workItem from="1480939200823" duration="3252000" />
     </task>
     <task id="LOCAL-00001" summary="All shit in once">
       <created>1477271782916</created>
@@ -884,11 +868,18 @@
       <option name="project" value="LOCAL" />
       <updated>1477500129302</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Pridané prvé dve (odrážky) kontroly, súbory a doplnené gui.">
+      <created>1480943075646</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1480943075646</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67860000" />
+    <option name="totallyTimeSpent" value="67877000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
